@@ -3,26 +3,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../reducers/authSlice";
 import { RootState } from "../store";
 import { useNavigate } from "react-router-dom";
-import loginBg from "../assets/login-background.jpg"
+import loginBg from "../assets/login-background.jpg";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
+
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Add useNavigate hook
+    const navigate = useNavigate();
     const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
+        setHasAttemptedLogin(true); // Track login attempts
         dispatch(loginUser({ username, password }) as any);
     };
 
-    // Redirect when authenticated
-    React.useEffect(() => {
-        if (isAuthenticated) {
-            navigate("/"); // Redirect to dashboard
+    // Clear error when user types
+    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setter(e.target.value);
+        if (error) {
+            dispatch({ type: "auth/clearError" });
         }
-    }, [isAuthenticated, navigate]);
+    };
+
+    // Redirect after successful login attempt
+    React.useEffect(() => {
+        if (isAuthenticated && hasAttemptedLogin) {
+            navigate("/");
+        }
+    }, [isAuthenticated, navigate, hasAttemptedLogin]);
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-fill bg-center bg-no-repeat"
@@ -42,7 +53,7 @@ const Login = () => {
                             id="username"
                             placeholder="Enter your username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={handleInputChange(setUsername)}
                             className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 focus:ring-2 focus:ring-green-400"
                         />
                     </div>
@@ -53,13 +64,13 @@ const Login = () => {
                             id="password"
                             placeholder="Enter your password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handleInputChange(setPassword)}
                             className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 focus:ring-2 focus:ring-green-400"
                         />
                     </div>
                     <div className="flex items-center">
-                        <input type="checkbox" id="remember" className="mr-2" />
-                        <label htmlFor="remember" className="text-white text-sm">Remember Me</label>
+                        <input type="checkbox" id="remember" className="mr-2 cursor-pointer" />
+                        <label htmlFor="remember" className="text-white text-sm cursor-pointer">Remember Me</label>
                     </div>
                     <button
                         type="submit"
@@ -75,3 +86,4 @@ const Login = () => {
 };
 
 export default Login;
+

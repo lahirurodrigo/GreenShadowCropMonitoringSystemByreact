@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Define Auth State
 interface AuthState {
@@ -14,26 +14,11 @@ const initialState: AuthState = {
     error: null,
 };
 
-// Async Thunk for Login (Handles API Request)
+// Async Thunk for Login
 export const loginUser = createAsyncThunk(
     "auth/loginUser",
     async ({ username, password }: { username: string; password: string }, { rejectWithValue }) => {
         try {
-            // const response = await fetch("https://api.example.com/login", {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({ username, password }),
-            // });
-            //
-            // // if (!response.ok) {
-            // //     throw new Error("Invalid credentials");
-            // // }
-            //
-            // const data = await response.json();
-            // localStorage.setItem("authToken", data.token); // Store token
-            //
-            // return data.token; // Return token to update state
-
             // Mock user credentials (Replace with API call later)
             const mockUser = { username: "admin", password: "1234" };
 
@@ -45,7 +30,7 @@ export const loginUser = createAsyncThunk(
             const mockToken = "mock-token-123";
             localStorage.setItem("authToken", mockToken); // Store token
 
-            return mockToken
+            return mockToken;
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
@@ -79,5 +64,7 @@ const authSlice = createSlice({
     },
 });
 
+// ✅ Ensure `logout` is properly exported
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;
+
