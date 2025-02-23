@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../reducers/authSlice.ts"
+import userReducer from "../reducers/userSlice.ts"
 
 
 export const store = configureStore({
     reducer: {
-            auth: authReducer, // Must match useSelector key
+        auth: authReducer,
+        users: userReducer,
     },
 });
 
