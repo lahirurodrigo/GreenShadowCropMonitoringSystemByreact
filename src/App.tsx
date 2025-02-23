@@ -3,31 +3,30 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import Login from "./pages/LoginPage.tsx";
-import ProtectedRoute from "./components/ProtectedRoutes"; // Import ProtectedRoute
-import RootLayout from "./components/RootLayout"; // Layout
-import Dashboard from "./pages/Dashboard"; // Example protected page
+import ProtectedRoute from "./components/ProtectedRoutes.tsx"; // Fixed import
+import RootLayout from "./components/RootLayout.tsx"; // Fixed import
+import Dashboard from "./pages/Dashboard.tsx";
+// import UserPage from "./pages/UserPage.tsx";
 
 const App = () => {
-  return (
-      <Provider store={store}>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
+    return (
+        <Provider store={store}>
+            <Router>
+                <Routes>
+                    {/* Public Route */}
+                    <Route path="/login" element={<Login />} />
 
-            {/* Protected Routes Wrapper */}
-            <Route element={<ProtectedRoute />}>
-              <Route element={<RootLayout />}>
-                <Route path="/" element={<Dashboard />} />
-                {/* Add other protected routes here */}
-              </Route>
-            </Route>
-          </Routes>
-        </Router>
-      </Provider>
-  );
+                    {/* Protected Routes */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route element={<RootLayout />}>
+                            <Route path="/" element={<Dashboard />} />
+                            {/*<Route path="/users" element={<UserPage />} />*/}
+                        </Route>
+                    </Route>
+                </Routes>
+            </Router>
+        </Provider>
+    );
 };
 
 export default App;
-
-
-
