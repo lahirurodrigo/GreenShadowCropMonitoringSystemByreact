@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface Field {
     fieldCode: string;
@@ -24,12 +24,6 @@ const initialState: FieldState = {
     crops: [],
 };
 
-// Fetch crops asynchronously
-export const fetchCrops = createAsyncThunk("fields/fetchCrops", async () => {
-    const response = await fetch("/api/crops");
-    return (await response.json()) as Crop[];
-});
-
 const fieldSlice = createSlice({
     name: "fields",
     initialState,
@@ -46,11 +40,6 @@ const fieldSlice = createSlice({
                 state.list[index] = action.payload;
             }
         },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(fetchCrops.fulfilled, (state, action) => {
-            state.crops = action.payload;
-        });
     },
 });
 

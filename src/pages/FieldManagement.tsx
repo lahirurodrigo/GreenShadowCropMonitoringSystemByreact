@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { addField, deleteField, updateField, fetchCrops, Field } from "../reducers/fieldSlice";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch} from "../store";
+import { addField, deleteField, updateField, Field } from "../reducers/fieldSlice";
+import {fetchCrops} from "../reducers/cropSlice.ts";
 
 export default function FieldManagement() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const fields = useSelector((state: RootState) => state.fields.list);
     const crops = useSelector((state: RootState) => state.fields.crops);
 
