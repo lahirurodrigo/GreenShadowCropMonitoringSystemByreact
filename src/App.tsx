@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoutes.tsx"; // Fixed import
 import RootLayout from "./components/RootLayout.tsx"; // Fixed import
 import Dashboard from "./pages/Dashboard.tsx";
 import UserPage from "./pages/UserPage.tsx";
+import FieldManagement from "./pages/FieldManagement.tsx";
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                         <Route element={<RootLayout />}>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/users" element={<UserPage />} />
+                            <Route path="/fields" element={<FieldManagement />} />
                         </Route>
                     </Route>
                 </Routes>
