@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface Staff {
     staffId: string;
@@ -21,6 +21,15 @@ interface StaffState {
 const initialState: StaffState = {
     list: [],
 };
+
+// Fetch crops asynchronously
+export const fetchStaff = createAsyncThunk<Staff[], void>(
+    "crops/fetchCrops",
+    async () => {
+        const response = await fetch("/api/crops");
+        return (await response.json()) as Staff[];
+    }
+);
 
 export const staffSlice = createSlice({
     name: "staff",
