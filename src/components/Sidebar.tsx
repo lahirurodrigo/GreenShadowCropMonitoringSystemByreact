@@ -11,6 +11,7 @@ export default function Sidebar() {
                         { to: "/users", label: "Users", icon: "bi-person" },
                         { to: "/fields", label: "Fields", icon: "bi-geo-alt" },
                         { to: "/crops", label: "Crops", icon: "bi-tree" },
+                        { to: "/staff", label: "Staff", icon: "bi bi-people" },
                     ].map((item) => (
                         <li key={item.to}>
                             <NavLink

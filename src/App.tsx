@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import FieldManagement from "./pages/FieldManagement.tsx";
 import CropManagement from "./pages/CropManagement.tsx";
+import StaffManagement from "./pages/StaffManagement.tsx";
 
 const App = () => {
     return (
@@ -25,6 +26,7 @@ const App = () => {
                             <Route path="/users" element={<UserPage />} />
                             <Route path="/fields" element={<FieldManagement />} />
                             <Route path="/crops" element={<CropManagement />} />
+                            <Route path="/staff" element={<StaffManagement />} />
                         </Route>
                     </Route>
                 </Routes>

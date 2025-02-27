@@ -3,6 +3,7 @@ import authReducer from "../reducers/authSlice.ts";
 import userReducer from "../reducers/userSlice.ts";
 import fieldReducer from "../reducers/fieldSlice.ts";
 import cropReducer from "../reducers/cropSlice.ts";
+import staffReducer from "../reducers/staffSlice.ts";
 import { useDispatch } from "react-redux";
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
         users: userReducer,
         fields: fieldReducer,
         crops: cropReducer,
+        staff: staffReducer,
     },
 });
 
