@@ -8,6 +8,7 @@ import RootLayout from "./components/RootLayout.tsx"; // Fixed import
 import Dashboard from "./pages/Dashboard.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import FieldManagement from "./pages/FieldManagement.tsx";
+import CropManagement from "./pages/CropManagement.tsx";
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/users" element={<UserPage />} />
                             <Route path="/fields" element={<FieldManagement />} />
+                            <Route path="/crops" element={<CropManagement />} />
                         </Route>
                     </Route>
                 </Routes>
