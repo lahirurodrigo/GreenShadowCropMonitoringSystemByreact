@@ -12,6 +12,7 @@ export default function Sidebar() {
                         { to: "/fields", label: "Fields", icon: "bi-geo-alt" },
                         { to: "/crops", label: "Crops", icon: "bi-tree" },
                         { to: "/staff", label: "Staff", icon: "bi bi-people" },
+                        { to: "/logs", label: "Logs", icon: "bi bi-clipboard" },
                     ].map((item) => (
                         <li key={item.to}>
                             <NavLink

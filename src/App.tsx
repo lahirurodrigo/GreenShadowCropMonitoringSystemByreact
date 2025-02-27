@@ -10,6 +10,7 @@ import UserPage from "./pages/UserPage.tsx";
 import FieldManagement from "./pages/FieldManagement.tsx";
 import CropManagement from "./pages/CropManagement.tsx";
 import StaffManagement from "./pages/StaffManagement.tsx";
+import MonitoringLogManagement from "./pages/MonitoringLogManagement.tsx";
 
 const App = () => {
     return (
@@ -27,6 +28,7 @@ const App = () => {
                             <Route path="/fields" element={<FieldManagement />} />
                             <Route path="/crops" element={<CropManagement />} />
                             <Route path="/staff" element={<StaffManagement />} />
+                            <Route path="/logs" element={<MonitoringLogManagement />} />
                         </Route>
                     </Route>
                 </Routes>
