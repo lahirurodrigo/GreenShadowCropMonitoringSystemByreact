@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { loginUser } from "../reducers/authSlice";
-import { RootState } from "../store";
+import {RootState, useAppDispatch} from "../store";
 import { useNavigate } from "react-router-dom";
 import loginBg from "../assets/login-background.jpg";
 
@@ -10,14 +10,17 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const { loading, error, isAuthenticated } = useSelector(
+        (state: RootState) => state.auth
+    );
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         setHasAttemptedLogin(true); // Track login attempts
-        dispatch(loginUser({ username, password }) as any);
+        // Dispatch loginUser action with username and password
+        dispatch(loginUser({ username, password }));
     };
 
     // Clear error when user types
@@ -31,7 +34,7 @@ const Login = () => {
     // Redirect after successful login attempt
     React.useEffect(() => {
         if (isAuthenticated && hasAttemptedLogin) {
-            navigate("/");
+            navigate("/");  // Redirect to home page
         }
     }, [isAuthenticated, navigate, hasAttemptedLogin]);
 
@@ -86,4 +89,3 @@ const Login = () => {
 };
 
 export default Login;
-

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Define Auth State
 interface AuthState {
@@ -9,7 +10,7 @@ interface AuthState {
 
 // Initial State
 const initialState: AuthState = {
-    isAuthenticated: !!localStorage.getItem("authToken"), // Check storage
+    isAuthenticated: !!localStorage.getItem("authToken"), // Check if token exists in localStorage
     loading: false,
     error: null,
 };
@@ -17,22 +18,23 @@ const initialState: AuthState = {
 // Async Thunk for Login
 export const loginUser = createAsyncThunk(
     "auth/loginUser",
-    async ({ username, password }: { username: string; password: string }, { rejectWithValue }) => {
+    async (
+        { username, password }: { username: string; password: string },
+        { rejectWithValue }
+    ) => {
         try {
-            // Mock user credentials (Replace with API call later)
-            const mockUser = { username: "admin", password: "1234" };
+            const response = await axios.post("http://localhost:5000/api/auth/login", { username, password });
 
-            if (username !== mockUser.username || password !== mockUser.password) {
-                throw new Error("Invalid credentials");
-            }
+            const accessToken = response.data.accessToken;
+            const refreshToken = response.data.refreshToken;
 
-            // Mock token (replace this when you have an actual API)
-            const mockToken = "mock-token-123";
-            localStorage.setItem("authToken", mockToken); // Store token
+            // Store both tokens in localStorage
+            localStorage.setItem("authToken", accessToken);  // Store access token
+            localStorage.setItem("refreshToken", refreshToken);  // Store refresh token
 
-            return mockToken;
+            return { accessToken, refreshToken }; // Return both tokens
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.response?.data?.error || "Something went wrong");
         }
     }
 );
@@ -43,7 +45,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state) => {
-            localStorage.removeItem("authToken");
+            localStorage.removeItem("authToken"); // Remove token on logout
             state.isAuthenticated = false;
         },
     },
@@ -64,6 +66,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout } = authSlice.actions; // Export the logout action
 export default authSlice.reducer;
-
