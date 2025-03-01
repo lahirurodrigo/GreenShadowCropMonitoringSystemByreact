@@ -59,7 +59,7 @@ export const updateCrop = createAsyncThunk<Crop, Crop>(
     async (updatedCrop, { rejectWithValue }) => {
         try {
             const response = await api.put(`/crops/${updatedCrop.cropCode}`, updatedCrop);
-            alert("Created")
+            alert("Updated")
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || "Failed to update crop");
@@ -72,7 +72,8 @@ export const deleteCrop = createAsyncThunk<string, string>(
     "crops/deleteCrop",
     async (cropCode, { rejectWithValue }) => {
         try {
-            await api.delete(`/crops/${cropCode}`);
+            const response = await api.delete(`/crops/${cropCode}`);
+            alert(response.status)
             return cropCode;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || "Failed to delete crop");
