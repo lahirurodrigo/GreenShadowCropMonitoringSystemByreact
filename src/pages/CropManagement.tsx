@@ -19,6 +19,7 @@ export default function CropManagement() {
     const [imagePreview, setImagePreview] = useState<string>("https://via.placeholder.com/200x200?text=Click+to+upload+Image");
 
     useEffect(() => {
+        console.log("Fetching starts")
         dispatch(fetchCrops());
     }, [dispatch]);
 

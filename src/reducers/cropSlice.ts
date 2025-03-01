@@ -31,7 +31,7 @@ export const fetchCrops = createAsyncThunk<Crop[], void>(
     "crops/fetchCrops",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await api.get("/");
+            const response = await api.get("/crops");
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || "Failed to fetch crops");
