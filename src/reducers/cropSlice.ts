@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const api = axios.create({
-    baseURL : "http://localhost:5000/api"
+    baseURL : "http://localhost:5000/api/"
 })
 
 export interface Crop {
@@ -11,7 +11,7 @@ export interface Crop {
     cropScientificName: string;
     cropCategory: string;
     cropSeason: string;
-    images: File[];
+    cropImage: string;
 }
 
 interface CropState {
@@ -31,7 +31,7 @@ export const fetchCrops = createAsyncThunk<Crop[], void>(
     "crops/fetchCrops",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await api.get("/crops");
+            const response = await api.get("/");
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || "Failed to fetch crops");
@@ -45,6 +45,7 @@ export const addCrop = createAsyncThunk<Crop, Crop>(
     async (newCrop, { rejectWithValue }) => {
         try {
             const response = await api.post("/crops", newCrop);
+            alert("Created")
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || "Failed to add crop");
@@ -58,6 +59,7 @@ export const updateCrop = createAsyncThunk<Crop, Crop>(
     async (updatedCrop, { rejectWithValue }) => {
         try {
             const response = await api.put(`/crops/${updatedCrop.cropCode}`, updatedCrop);
+            alert("Created")
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || "Failed to update crop");
