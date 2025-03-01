@@ -7,7 +7,6 @@ import {fetchCrops} from "../reducers/cropSlice.ts";
 export default function FieldManagement() {
     const dispatch = useAppDispatch();
     const fields = useSelector((state: RootState) => state.fields.list);
-    const crops = useSelector((state: RootState) => state.fields.crops);
 
     const [formData, setFormData] = useState<Field>({
         fieldCode: "",
@@ -15,13 +14,11 @@ export default function FieldManagement() {
         fieldLocation: "",
         fieldSize: 0,
         cropCode: "",
-        images: []
+        fieldImage01:"",
+        fieldImage02:"",
     });
 
-    const [imagePreviews, setImagePreviews] = useState<string[]>([
-        "https://via.placeholder.com/200x200?text=Click+to+upload+Image+1",
-        "https://via.placeholder.com/200x200?text=Click+to+upload+Image+2"
-    ]);
+    const [imagePreview, setImagePreview] = useState<string>("https://via.placeholder.com/200x200?text=Click+to+upload+Image");
 
     useEffect(() => {
         dispatch(fetchCrops());
@@ -31,16 +28,19 @@ export default function FieldManagement() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleImageUpload = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const file = event.target.files[0];
-            const newPreviews = [...imagePreviews];
-            newPreviews[index] = URL.createObjectURL(file);
 
-            setImagePreviews(newPreviews);
-            const newImages = [...formData.images];
-            newImages[index] = file;
-            setFormData({ ...formData, images: newImages });
+            // Create an object URL for the image
+            const imageUrl = URL.createObjectURL(file);
+
+            // Update the image preview
+            setImagePreview(imageUrl);
+
+            // Update the form data with the image URL (not the file)
+            setFormData({ ...formData, fieldImage01: imageUrl });
+            setFormData({ ...formData, fieldImage02: imageUrl });
         }
     };
 
@@ -60,11 +60,8 @@ export default function FieldManagement() {
     };
 
     const resetForm = () => {
-        setFormData({ fieldCode: "", fieldName: "", fieldLocation: "", fieldSize: 0, cropCode: "", images: [] });
-        setImagePreviews([
-            "https://via.placeholder.com/200x200?text=Click+to+upload+Image+1",
-            "https://via.placeholder.com/200x200?text=Click+to+upload+Image+2"
-        ]);
+        setFormData({ fieldCode: "", fieldName: "", fieldLocation: "", fieldSize: 0, cropCode: "", fieldImage01:"", fieldImage02:"" });
+        setImagePreview("https://via.placeholder.com/200x200?text=Click+to+upload+Image");
     };
 
     return (
@@ -93,9 +90,9 @@ export default function FieldManagement() {
                             <label className="form-label">Crop ID</label>
                             <select className="form-control" name="cropCode" value={formData.cropCode} onChange={handleChange} required>
                                 <option value="">Select a Crop</option>
-                                {crops.map((crop) => (
-                                    <option key={crop.id} value={crop.id}>
-                                        {crop.name}
+                                {fields.map((field) => (
+                                    <option key={field.cropCode} value={field.cropCode}>
+                                        {field.cropCode}
                                     </option>
                                 ))}
                             </select>
@@ -103,15 +100,22 @@ export default function FieldManagement() {
                     </div>
 
                     <div className="flex gap-4 mt-4">
-                        {[0, 1].map((index) => (
-                            <div key={index} className="text-center">
-                                <label className="form-label">Field Image {index + 1}</label>
+                            <div className="text-center">
+                                <label className="form-label">Field Image</label>
                                 <div className="image-upload-wrapper">
-                                    <img className="image-preview" src={imagePreviews[index]} alt={`Preview ${index + 1}`} />
-                                    <input type="file" className="form-control d-none" accept="image/*" onChange={(e) => handleImageUpload(index, e)} />
+                                    <img
+                                        className="image-preview"
+                                        src={imagePreview}
+                                        alt="Crop Image"
+                                    />
+                                    <input
+                                        type="file"
+                                        className="form-control d-none"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                    />
                                 </div>
                             </div>
-                        ))}
                     </div>
 
                     <div className="flex justify-end gap-2 mt-4">
