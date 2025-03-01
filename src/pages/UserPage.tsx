@@ -1,18 +1,17 @@
-
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
+import { RootState, AppDispatch } from "../store";  // Import AppDispatch here
 import { addUser, deleteUser, User } from "../reducers/userSlice";
 
 export default function UserManagement() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();  // Type the dispatch function
     const users = useSelector((state: RootState) => state.users);
 
     // State for form input
     const [formData, setFormData] = useState<User>({
-        email: "",
+        username: "",
         password: "",
-        role: "MANAGER",
+        role: "ADMIN",
     });
 
     // Handle Input Change
@@ -20,11 +19,11 @@ export default function UserManagement() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Save User
+    // Save User (Dispatch addUser)
     const handleSave = () => {
-        if (!formData.email || !formData.password) return;
-        dispatch(addUser(formData));
-        setFormData({ email: "", password: "", role: "MANAGER" });
+        if (!formData.username || !formData.password) return;
+        dispatch(addUser(formData));  // Dispatch the addUser action with the form data
+        setFormData({ username: "", password: "", role: "STAFF" });  // Reset form
     };
 
     // Handle Search
@@ -59,8 +58,8 @@ export default function UserManagement() {
                                     type="email"
                                     className="form-control form-control-sm"
                                     id="userEmail"
-                                    name="email"
-                                    value={formData.email}
+                                    name="username"
+                                    value={formData.username}
                                     onChange={handleChange}
                                     required
                                 />
@@ -87,9 +86,9 @@ export default function UserManagement() {
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="MANAGER">Manager</option>
+                                    <option value="STAFF">Manager</option>
                                     <option value="ADMIN">Administrative</option>
-                                    <option value="SCIENTIST">Scientist</option>
+                                    <option value="USER">Scientist</option>
                                 </select>
                             </div>
                         </div>
@@ -114,12 +113,12 @@ export default function UserManagement() {
                             <tbody>
                             {users.map((user, index) => (
                                 <tr key={index}>
-                                    <td>{user.email}</td>
+                                    <td>{user.username}</td>
                                     <td>{user.role}</td>
                                     <td>
                                         <button
                                             className="btn btn-danger btn-sm"
-                                            onClick={() => dispatch(deleteUser(user.email))}
+                                            onClick={() => dispatch(deleteUser(user.username))}
                                         >
                                             Delete
                                         </button>
